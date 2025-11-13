@@ -77,9 +77,8 @@ const config = {
         __dirname,
         "..",
         "BRK_CNC_CORE",
-        "test-data",
-        "source_data",
-        "matrix_excel_files"
+        "train-data",
+        "matrix_tools"
       ),
 
       // All processing happens in BRK temp structure - no separate working directories needed
@@ -99,9 +98,8 @@ const config = {
         __dirname,
         "..",
         "BRK_CNC_CORE",
-        "test-data",
-        "source_data",
-        "matrix_excel_files"
+        "train-data",
+        "matrix_tools"
       ),
 
       // Configuration files (schedule file can be in test_source_data if needed)

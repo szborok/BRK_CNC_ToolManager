@@ -237,7 +237,7 @@ app.get("/api/analysis/upcoming", async (req, res) => {
  */
 app.post("/api/config", async (req, res) => {
   try {
-    const { testMode, scanPaths, workingFolder } = req.body;
+    const { testMode, scanPaths, workingFolder, autoRun = false } = req.body;
 
     if (typeof testMode !== "boolean") {
       return res.status(400).json({
@@ -250,7 +250,7 @@ app.post("/api/config", async (req, res) => {
 
     // Update configuration
     config.app.testMode = testMode;
-    config.app.autoMode = true; // Activate scanning
+    config.app.autoMode = autoRun; // Only activate scanning if explicitly requested
 
     if (workingFolder) {
       config.app.userDefinedWorkingFolder = workingFolder;
@@ -265,13 +265,13 @@ app.post("/api/config", async (req, res) => {
 
     Logger.info("Configuration updated from Dashboard", {
       testMode,
-      autoMode: true,
+      autoMode: autoRun,
       workingFolder,
       scanPaths,
     });
 
-    // Start Executor if not already running
-    if (!executor) {
+    // Start Executor only if autoRun is true
+    if (autoRun && !executor) {
       Logger.info("Starting Executor after config update...");
       executor = new Executor(dataManager);
       executor.start().catch((error) => {

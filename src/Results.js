@@ -362,6 +362,43 @@ class Results {
   }
 
   /**
+   * Check if a tool is a matrix tool by analyzing its name
+   * Removes holder suffix and checks for matrix category codes
+   * @param {string} toolName - Full tool name (e.g., "FRA-P8400-S11.4R0_H63WM12L80X")
+   * @returns {boolean} - True if tool contains matrix category code
+   */
+  isMatrixTool(toolName) {
+    if (!toolName) return false;
+
+    // Remove holder suffix (everything after last underscore that starts with H)
+    // Examples: "FRA-P8400-S11.4R0_H63WM12L80X" → "FRA-P8400-S11.4R0"
+    //           "KOM-U11-TF39_H63ABS50" → "KOM-U11-TF39"
+    let baseName = toolName;
+    const lastUnderscore = toolName.lastIndexOf('_');
+    if (lastUnderscore !== -1) {
+      const afterUnderscore = toolName.substring(lastUnderscore + 1);
+      if (afterUnderscore.startsWith('H')) {
+        baseName = toolName.substring(0, lastUnderscore);
+      }
+    }
+
+    // Matrix tool category codes from Excel inventory
+    // E-Cut: 8400, 8410, 8420
+    // MFC: 8201, 8211, 8221
+    // XF: 1525, 8521
+    // XFeed: 7620, 7624
+    const matrixCategoryCodes = [
+      '8400', '8410', '8420',  // E-Cut
+      '8201', '8211', '8221',  // MFC
+      '1525', '8521',          // XF
+      '7620', '7624'           // XFeed
+    ];
+
+    // Check if base name contains any matrix category code
+    return matrixCategoryCodes.some(code => baseName.includes(code));
+  }
+
+  /**
    * Create dashboard-ready tools list
    * Converts tool data to match dashboard expectations:
    * { tools: [{ id, name, status, isMatrix }] }
@@ -371,7 +408,7 @@ class Results {
 
     // Add all used tools with dashboard-compatible fields
     for (const usedTool of toolsUsedList) {
-      const isMatrix = matrixToolCodes.has(usedTool.toolName);
+      const isMatrix = this.isMatrixTool(usedTool.toolName);
 
       tools.push({
         id: usedTool.toolName, // Required by dashboard
@@ -1000,38 +1037,38 @@ class Results {
   async saveToStorage(reportData) {
     try {
       // If we have tempManager, save additional analysis files to organized structure
-      if (this.tempManager && reportData) {
-        // Dashboard format doesn't have reportInfo, skip additional files
-        if (reportData.reportInfo) {
-          // Save detailed tool analysis
-          const toolAnalysis = {
-            matrixTools: reportData.matrixTools || [],
-            nonMatrixTools: reportData.nonMatrixTools || [],
-            generatedAt: reportData.reportInfo.generatedAt,
-          };
+      if (this.tempManager) {
+        const generatedAt = new Date().toISOString();
+        
+        // Save detailed tool analysis (dashboard format only has tools array)
+        const toolAnalysis = {
+          tools: reportData.tools || [],
+          generatedAt: generatedAt,
+        };
 
-          await this.tempManager.saveToTemp(
-            "tool_analysis_detailed.json",
-            JSON.stringify(toolAnalysis, null, 2),
-            "results"
-          );
+        await this.tempManager.saveToTemp(
+          "tool_analysis_detailed.json",
+          JSON.stringify(toolAnalysis, null, 2),
+          "results"
+        );
 
-          // Save summary report
-          const summary = {
-            summary: reportData.reportInfo.summary,
-            generatedAt: reportData.reportInfo.generatedAt,
-          };
+        // Save summary report
+        const summary = {
+          totalTools: reportData.tools ? reportData.tools.length : 0,
+          matrixTools: reportData.tools ? reportData.tools.filter(t => t.isMatrix).length : 0,
+          nonMatrixTools: reportData.tools ? reportData.tools.filter(t => !t.isMatrix).length : 0,
+          generatedAt: generatedAt,
+        };
 
-          await this.tempManager.saveToTemp(
-            "analysis_summary.json",
-            JSON.stringify(summary, null, 2),
-            "results"
-          );
+        await this.tempManager.saveToTemp(
+          "analysis_summary.json",
+          JSON.stringify(summary, null, 2),
+          "results"
+        );
 
-          Logger.info(
-            "✅ Additional analysis files saved to organized temp structure"
-          );
-        }
+        Logger.info(
+          "✅ Additional analysis files saved to organized temp structure"
+        );
       }
 
       Logger.info("✅ Results saved successfully");
