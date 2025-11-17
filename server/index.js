@@ -345,7 +345,7 @@ async function startServer() {
       Logger.info("Executor started successfully");
     }
 
-    app.listen(PORT, () => {
+    const server = app.listen(PORT, () => {
       Logger.info(
         `🚀 ToolManager API Server running on http://localhost:${PORT}`
       );
@@ -357,6 +357,19 @@ async function startServer() {
         `🔄 Auto-run: ${config.app.autoMode ? "ENABLED" : "DISABLED"}`
       );
       console.log(`📡 API endpoints available at http://localhost:${PORT}/api`);
+    });
+    
+    // Handle port binding errors
+    server.on('error', (err) => {
+      if (err.code === 'EADDRINUSE') {
+        Logger.error(`❌ Port ${PORT} is already in use. Please stop the conflicting service.`);
+        console.error(`❌ Port ${PORT} is already in use. Please stop the conflicting service.`);
+        process.exit(1);
+      } else {
+        Logger.error(`❌ Server error: ${err.message}`);
+        console.error(`❌ Server error: ${err.message}`);
+        process.exit(1);
+      }
     });
   } catch (error) {
     Logger.error("Failed to start server", { error: error.message });

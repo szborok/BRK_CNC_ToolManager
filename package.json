@@ -10,7 +10,10 @@
     "manual": "node main.js --manual",
     "setup": "node main.js --setup",
     "cleanup": "node main.js --cleanup",
-    "test": "node scripts/setup-test-data.js && node main.js --test",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:integration": "node scripts/setup-test-data.js && node main.js --test",
     "test:no-setup": "node main.js --test",
     "debug": "node main.js --debug",
     "test-storage": "node main.js --test-storage",
@@ -41,5 +44,11 @@
   },
   "engines": {
     "node": ">=14.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/supertest": "^6.0.3",
+    "jest": "^30.2.0",
+    "supertest": "^7.1.4"
   }
 }

@@ -1,123 +1,37 @@
-{{
-
-  "version": "1.0.0",  "version": "1.0.0",
-
-  "description": "Matrix tool category definitions for matching inventory Excel files to JSON tool usage",  "generatedAt": "2025-11-13T19:21:01.523Z",
-
-  "categories": {  "sourceFiles": [
-
-    "ECUT": {    {
-
-      "name": "E-Cut",      "file": "E-Cut készlet.xlsx",
-
-      "description": "End cutting tools",      "category": "ECUT",
-
-      "codePatterns": ["8400", "8410", "8420"],      "toolCount": 29,
-
-      "excelFile": "E-Cut készlet.xlsx"      "processedAt": "2025-11-13T19:21:01.544Z"
-
-    },    },
-
-    "MFC": {    {
-
-      "name": "MFC",      "file": "MFC készlet.xlsx",
-
-      "description": "Multi-functional cutting tools",      "category": "MFC",
-
-      "codePatterns": ["8201", "8211", "8221"],      "toolCount": 28,
-
-      "excelFile": "MFC készlet.xlsx"      "processedAt": "2025-11-13T19:21:01.554Z"
-
-    },    },
-
-    "XF": {    {
-
-      "name": "XF",      "file": "XF simitó.xlsx",
-
-      "description": "Finishing tools",      "category": "XF",
-
-      "codePatterns": ["1525", "8521"],      "toolCount": 37,
-
-      "excelFile": "XF simitó.xlsx"      "processedAt": "2025-11-13T19:21:01.560Z"
-
-    },    },
-
-    "XFEED": {    {
-
-      "name": "XFeed",      "file": "XFeed szerszámok.xlsx",
-
-      "description": "Feed/Drilling tools",      "category": "XFEED",
-
-      "codePatterns": ["7620", "7624"],      "toolCount": 0,
-
-      "excelFile": "XFeed szerszámok.xlsx"      "processedAt": "2025-11-13T19:21:01.564Z"
-
-    }    }
-
-  },  ],
-
-  "matchingRules": {  "categories": {
-
-    "description": "How to match matrix tools from Excel inventory to JSON tool usage",    "ECUT": {
-
-    "toolCodeFormat": "RT-{4-digit-category-code}{3-digit-diameter-code}",      "name": "ECUT",
-
-    "examples": [      "excelFile": "E-Cut készlet.xlsx",
-
-      {      "toolCount": 29,
-
-        "matrixCode": "RT-8400300",      "codePatterns": [
-
-        "category": "ECUT",        "8400",
-
-        "categoryCode": "8400",        "8410",
-
-        "diameterCode": "300",        "8420"
-
-        "actualDiameter": 5.7,      ],
-
-        "note": "Diameter is extracted from description column: ø5,7/6x56/12 r0.1 z4"      "tools": [
-
-      },        {
-
-      {          "toolCode": "RT-8400300",
-
-        "matrixCode": "RT-8201450",          "codePrefix": "8400",
-
-        "category": "MFC",          "description": "",
-
-        "categoryCode": "8201",          "diameter": null
-
-        "diameterCode": "450",        },
-
-        "actualDiameter": 8.0,        {
-
-        "note": "Diameter extracted from description"          "toolCode": "RT-8400391_1",
-
-      }          "codePrefix": "8400",
-
-    ],          "description": "",
-
-    "matching": {          "diameter": null
-
-      "step1": "Extract 4-digit category code from tool code (8400, 8201, etc.)",        },
-
-      "step2": "Extract diameter from Excel description column (parse ø5,7 → 5.7mm)",        {
-
-      "step3": "Match JSON tool usage by category code + diameter",          "toolCode": "RT-8400391",
-
-      "step4": "Ignore variant suffixes like _1, _2 (same tool, different variant)"          "codePrefix": "8400",
-
-    },          "description": "",
-
-    "diameterTolerance": 0.01,          "diameter": null
-
-    "ignoreVariants": true        },
-
-  }        {
-
-}          "toolCode": "RT-8400450",
-
+{
+  "version": "1.0.0",
+  "generatedAt": "2025-11-13T19:21:01.523Z",
+  "categories": {
+    "ECUT": {
+      "name": "ECUT",
+      "excelFile": "E-Cut készlet.xlsx",
+      "toolCount": 29,
+      "codePatterns": [
+        "8400",
+        "8410",
+        "8420"
+      ],
+      "tools": [
+        {
+          "toolCode": "RT-8400300",
+          "codePrefix": "8400",
+          "description": "",
+          "diameter": null
+        },
+        {
+          "toolCode": "RT-8400391_1",
+          "codePrefix": "8400",
+          "description": "",
+          "diameter": null
+        },
+        {
+          "toolCode": "RT-8400391",
+          "codePrefix": "8400",
+          "description": "",
+          "diameter": null
+        },
+        {
+          "toolCode": "RT-8400450",
           "codePrefix": "8400",
           "description": "",
           "diameter": null
