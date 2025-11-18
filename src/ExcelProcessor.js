@@ -2,7 +2,7 @@
 /**
  * Excel processor for extracting tool inventory from the daily Excel file
  */
-const XLSX = require('xlsx');
+const ExcelJS = require('exceljs');
 const fs = require('fs');
 const Logger = require('../utils/Logger');
 
@@ -12,7 +12,7 @@ class ExcelProcessor {
    * @param {string} filePath - Path to Excel file
    * @returns {Object} - Processed tool inventory
    */
-  static processMainExcel(filePath) {
+  static async processMainExcel(filePath) {
     try {
       Logger.info(`Processing Excel file: ${filePath}`);
       
@@ -20,11 +20,15 @@ class ExcelProcessor {
         throw new Error(`File not found: ${filePath}`);
       }
 
-      const workbook = XLSX.readFile(filePath);
-      const worksheet = workbook.Sheets[workbook.SheetNames[0]]; // First sheet
+      const workbook = new ExcelJS.Workbook();
+      await workbook.xlsx.readFile(filePath);
+      const worksheet = workbook.worksheets[0]; // First sheet
       
       // Convert to array of arrays for easier processing
-      const rawData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+      const rawData = [];
+      worksheet.eachRow((row, rowNumber) => {
+        rawData.push(row.values.slice(1)); // Remove first empty element
+      });
       
       // Find the header row with "Tételkód" and "Mennyiség"
       const headerRowIndex = this.findHeaderRow(rawData);

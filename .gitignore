@@ -104,4 +104,4 @@ excel_backup/
 
 # Development logs (keep recent production logs)
 logs/app-2025-10-*.log
-logs/app-2025-11-0[1-4].log
+logs/app-2025-11-0[1-4].log*.icloud

@@ -4,7 +4,7 @@
  * Learns tool categories, codes, and diameter patterns from train-data
  */
 
-const XLSX = require('xlsx');
+const ExcelJS = require('exceljs');
 const fs = require('fs');
 const path = require('path');
 
@@ -33,6 +33,7 @@ const matrixDefinitions = {
   categories: {}
 };
 
+(async () => {
 for (const { file, category } of excelFiles) {
   const filePath = path.join(TRAIN_DATA_PATH, file);
   
@@ -44,9 +45,13 @@ for (const { file, category } of excelFiles) {
   console.log(`📊 Processing: ${file}`);
   
   try {
-    const workbook = XLSX.readFile(filePath);
-    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-    const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.readFile(filePath);
+    const worksheet = workbook.worksheets[0];
+    const data = [];
+    worksheet.eachRow((row) => {
+      data.push(row.values.slice(1)); // Remove first empty element
+    });
     
     // Find header row
     let headerRowIndex = -1;
@@ -162,6 +167,16 @@ matrixDefinitions.matchingRules = {
     }
   ]
 };
+
+// Write to file
+fs.writeFileSync(OUTPUT_PATH, JSON.stringify(matrixDefinitions, null, 2), 'utf8');
+
+console.log('\n✅ Matrix tool definitions generated successfully!');
+console.log(`📁 Output: ${OUTPUT_PATH}`);
+console.log(`📊 Total categories: ${Object.keys(matrixDefinitions.categories).length}`);
+console.log(`🔧 Total tools: ${Object.values(matrixDefinitions.categories).reduce((sum, cat) => sum + cat.tools.length, 0)}\n`);
+
+})();
 
 // Write output
 fs.writeFileSync(OUTPUT_PATH, JSON.stringify(matrixDefinitions, null, 2));

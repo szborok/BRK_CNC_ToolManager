@@ -327,6 +327,36 @@ async function startServer() {
   try {
     Logger.info("Starting ToolManager API Server...");
 
+    // Try to load unified config and auto-configure
+    try {
+      const fs = require('fs');
+      const path = require('path');
+      const unifiedConfigPath = path.join(__dirname, '../../BRK_CNC_CORE/BRK_SETUP_WIZARD_CONFIG.json');
+      
+      if (fs.existsSync(unifiedConfigPath)) {
+        const unifiedConfig = JSON.parse(fs.readFileSync(unifiedConfigPath, 'utf8'));
+        Logger.info("✅ Found unified config - auto-configuring from filesystem");
+        
+        // Apply unified config
+        if (unifiedConfig.modules?.matrixTools) {
+          const toolConfig = unifiedConfig.modules.matrixTools;
+          config.app.testMode = unifiedConfig.demoMode || false;
+          config.app.autoMode = toolConfig.mode === 'auto';
+          config.app.workingFolder = unifiedConfig.storage?.tempPath || config.app.workingFolder;
+          
+          Logger.info("📡 Auto-configured from BRK_SETUP_WIZARD_CONFIG.json", {
+            testMode: config.app.testMode,
+            autoMode: config.app.autoMode,
+            dataPath: toolConfig.dataPath
+          });
+        }
+      } else {
+        Logger.info("⚠️ No unified config found - using defaults");
+      }
+    } catch (error) {
+      Logger.info("⚠️ Could not load unified config - using defaults", { error: error.message });
+    }
+
     const initialized = await initializeDataManager();
     if (!initialized) {
       Logger.error(
