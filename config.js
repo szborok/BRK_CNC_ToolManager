@@ -68,6 +68,9 @@ const config = {
     resultSuffix: "BRK_result",
   },
   paths: {
+    // Shared resources (used by both test and production)
+    toolImagesPath: path.join(__dirname, "..", "BRK_CNC_CORE", "train-data", "tool_images"),
+
     test: {
   // Read-only test case folders (DO NOT MODIFY) - uses centralized BRK_CNC_CORE test-data
   testDataPath: path.join(__dirname, "..", "BRK_CNC_CORE", "test-data", "source_data"),
