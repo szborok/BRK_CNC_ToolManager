@@ -119,7 +119,7 @@ app.get("/api/tools", async (req, res) => {
 
 /**
  * GET /api/tool-images/:manufacturer/:filename
- * Serve tool type images
+ * Serve tool type images - tries multiple extensions if exact match not found
  */
 app.get("/api/tool-images/:manufacturer/:filename", (req, res) => {
   const fs = require("fs");
@@ -128,16 +128,37 @@ app.get("/api/tool-images/:manufacturer/:filename", (req, res) => {
   try {
     const { manufacturer, filename } = req.params;
     const toolImagesPath = config.getToolImagesPath();
-    const imagePath = path.join(toolImagesPath, manufacturer, filename);
+    
+    // Strip extension from filename to get base name
+    const baseFilename = filename.replace(/\.[^.]+$/, '');
+    
+    // Extensions to try in order
+    const extensions = ['.JPG', '.jpg', '.jfif', '.gif', '.png', '.jpeg'];
+    
+    // Try with provided filename first
+    let imagePath = path.join(toolImagesPath, manufacturer, filename);
+    let foundPath = null;
+    
+    if (fs.existsSync(imagePath)) {
+      foundPath = imagePath;
+    } else {
+      // Try different extensions
+      for (const ext of extensions) {
+        imagePath = path.join(toolImagesPath, manufacturer, baseFilename + ext);
+        if (fs.existsSync(imagePath)) {
+          foundPath = imagePath;
+          break;
+        }
+      }
+    }
 
-    // Check if file exists
-    if (!fs.existsSync(imagePath)) {
+    if (!foundPath) {
       Logger.warn(`Tool image not found: ${manufacturer}/${filename}`);
       return res.status(404).json({ error: "Image not found" });
     }
 
     // Determine content type from extension
-    const ext = path.extname(filename).toLowerCase();
+    const ext = path.extname(foundPath).toLowerCase();
     const contentTypes = {
       ".png": "image/png",
       ".jpg": "image/jpeg",
@@ -149,12 +170,12 @@ app.get("/api/tool-images/:manufacturer/:filename", (req, res) => {
     const contentType = contentTypes[ext] || "application/octet-stream";
 
     // Read and serve the file
-    const imageBuffer = fs.readFileSync(imagePath);
+    const imageBuffer = fs.readFileSync(foundPath);
     res.setHeader("Content-Type", contentType);
     res.setHeader("Cache-Control", "public, max-age=86400"); // Cache for 24 hours
     res.send(imageBuffer);
 
-    Logger.info(`Served tool image: ${manufacturer}/${filename}`);
+    Logger.info(`Served tool image: ${manufacturer}/${path.basename(foundPath)}`);
   } catch (error) {
     Logger.error("Failed to serve tool image", { error: error.message });
     res.status(500).json({ error: "Failed to serve image" });
@@ -272,50 +293,6 @@ app.get("/api/analysis/upcoming", async (req, res) => {
         details: error.message,
       },
     });
-  }
-});
-
-/**
- * GET /api/tool-images/:manufacturer/:filename
- * Serve tool type images
- */
-app.get("/api/tool-images/:manufacturer/:filename", (req, res) => {
-  const fs = require("fs");
-  const path = require("path");
-
-  try {
-    const { manufacturer, filename } = req.params;
-    const toolImagesPath = config.getToolImagesPath();
-    const imagePath = path.join(toolImagesPath, manufacturer, filename);
-
-    // Check if file exists
-    if (!fs.existsSync(imagePath)) {
-      Logger.warn(`Tool image not found: ${manufacturer}/${filename}`);
-      return res.status(404).json({ error: "Image not found" });
-    }
-
-    // Determine content type from extension
-    const ext = path.extname(filename).toLowerCase();
-    const contentTypes = {
-      ".png": "image/png",
-      ".jpg": "image/jpeg",
-      ".jpeg": "image/jpeg",
-      ".gif": "image/gif",
-      ".jfif": "image/jpeg",
-    };
-
-    const contentType = contentTypes[ext] || "application/octet-stream";
-
-    // Read and serve the file
-    const imageBuffer = fs.readFileSync(imagePath);
-    res.setHeader("Content-Type", contentType);
-    res.setHeader("Cache-Control", "public, max-age=86400"); // Cache for 24 hours
-    res.send(imageBuffer);
-
-    Logger.info(`Served tool image: ${manufacturer}/${filename}`);
-  } catch (error) {
-    Logger.error("Failed to serve tool image", { error: error.message });
-    res.status(500).json({ error: "Failed to serve image" });
   }
 });
 
