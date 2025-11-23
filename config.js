@@ -3,8 +3,8 @@ const path = require("path");
 
 const config = {
   app: {
-    testMode: false, // true = use test data paths, false = use production paths (set by Dashboard config)
-    autoMode: false, // Same as json_scanner's autorun (activated by Dashboard config)
+    mode: 'auto', // 'test' = test data + manual trigger, 'manual' = production + manual trigger, 'auto' = production + autorun
+    useTestPaths: true, // Override to use test-data paths even in auto mode
     scanIntervalMs: 60000, // 60 seconds - same as json_scanner
     logLevel: "info",
     enableDetailedLogging: true,
@@ -129,32 +129,41 @@ const config = {
   },
 };
 
+// Backward compatibility helpers
+Object.defineProperty(config.app, 'testMode', {
+  get() { return this.mode === 'test'; },
+  set(val) { this.mode = val ? 'test' : (this.mode === 'manual' ? 'manual' : 'auto'); }
+});
+
+Object.defineProperty(config.app, 'autoMode', {
+  get() { return this.mode === 'auto'; },
+  set(val) { this.mode = val ? 'auto' : 'manual'; }
+});
+
 config.getScanPath = function () {
   // Returns JSON scan path since that's what we actually scan for data
   return this.getJsonScanPath();
 };
 
 config.getExcelScanPath = function () {
-  return this.app.testMode
-    ? this.paths.test.excelScanPath
-    : this.paths.production.excelScanPath;
+  const useTest = this.app.mode === 'test' || this.app.useTestPaths;
+  return useTest ? this.paths.test.excelScanPath : this.paths.production.excelScanPath;
 };
 
 config.getSampleExcelPath = function () {
   // Only available in test mode - for development reference
-  return this.app.testMode ? this.paths.test.sampleExcelPath : null;
+  const useTest = this.app.mode === 'test' || this.app.useTestPaths;
+  return useTest ? this.paths.test.sampleExcelPath : null;
 };
 
 config.getJsonScanPath = function () {
-  return this.app.testMode
-    ? this.paths.test.jsonScanPath
-    : this.paths.production.jsonScanPath;
+  const useTest = this.app.mode === 'test' || this.app.useTestPaths;
+  return useTest ? this.paths.test.jsonScanPath : this.paths.production.jsonScanPath;
 };
 
 config.getScheduleFilePath = function () {
-  return this.app.testMode
-    ? this.paths.test.scheduleFile
-    : this.paths.production.scheduleFile;
+  const useTest = this.app.mode === 'test' || this.app.useTestPaths;
+  return useTest ? this.paths.test.scheduleFile : this.paths.production.scheduleFile;
 };
 
 config.getCompletionDate = function (creationDate, projectData = null) {
