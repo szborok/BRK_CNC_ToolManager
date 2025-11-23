@@ -415,7 +415,8 @@ class Results {
         name: usedTool.toolName, // Required by dashboard
         status: "in_use", // Required by dashboard (currently being used)
         isMatrix: isMatrix, // Boolean for matrix/non-matrix filtering
-        usageTime: usedTool.totalUsageTime,
+        usageTime: usedTool.totalUsageTime, // Keep in seconds for backward compatibility
+        usageMinutes: Math.round((usedTool.totalUsageTime / 60) * 100) / 100, // Convert to minutes with 2 decimal places
         usageCount: usedTool.usageCount,
         projectCount: usedTool.projectCount,
       });

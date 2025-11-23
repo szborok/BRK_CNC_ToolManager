@@ -39,12 +39,13 @@ class Scanner {
     this.running = false;
     Logger.warn("Scanner stopped after finishing current project.");
 
-    // In test mode, don't clean up temp data (like JSONScanner)
-    if (config.app.testMode) {
+    // Don't clean up in persistent folder mode or test mode
+    if (config.app.usePersistentTempFolder) {
+      Logger.info("📁 Persistent temp folder mode: Preserving data for reuse");
+    } else if (config.app.testMode) {
       Logger.info("🧪 Test mode: Preserving temp data for inspection");
-      // Don't call tempManager cleanup methods
     } else {
-      // Production mode can clean up
+      // Production mode with non-persistent folders can clean up
       if (this.tempManager && typeof this.tempManager.cleanup === "function") {
         this.tempManager.cleanup();
       }
@@ -113,10 +114,12 @@ class Scanner {
       await this.generateConsolidatedReport(excelData, processedData);
       Logger.info(`📄 Generated consolidated report`);
 
-      // Step 8: Clean temp folder (only in production mode)
-      if (!config.app.testMode) {
+      // Step 8: Clean temp folder (only in production mode without persistent folders)
+      if (!config.app.testMode && !config.app.usePersistentTempFolder) {
         await this.cleanTempFolder();
         Logger.info(`🧹 Cleaned temp folder`);
+      } else if (config.app.usePersistentTempFolder) {
+        Logger.info(`📁 Persistent temp folder mode: Preserving data for reuse`);
       } else {
         Logger.info(`🧪 Test mode: Preserving temp data for inspection`);
       }
@@ -127,8 +130,8 @@ class Scanner {
       return processedData;
     } catch (err) {
       Logger.error(`Scanner failed: ${err.message}`);
-      // Clean temp folder on error (only in production mode)
-      if (!config.app.testMode) {
+      // Clean temp folder on error (only in production mode without persistent folders)
+      if (!config.app.testMode && !config.app.usePersistentTempFolder) {
         try {
           await this.cleanTempFolder();
         } catch (cleanupErr) {
@@ -136,7 +139,7 @@ class Scanner {
         }
       } else {
         Logger.info(
-          `🧪 Test mode: Preserving temp data despite error for inspection`
+          `🧪 Preserving temp data despite error for inspection (${config.app.usePersistentTempFolder ? 'persistent mode' : 'test mode'})`
         );
       }
       return [];
@@ -207,10 +210,10 @@ class Scanner {
             // Recursively scan subdirectories
             scanDirectory(fullPath);
           } else if (item.isFile() && item.name.endsWith(".json")) {
-            // Skip generated files (BRK_fixed, BRK_result) - we only want original JSON
+            // Skip generated files (_fixed, _result suffixes)
             if (
-              item.name.includes("BRK_fixed") ||
-              item.name.includes("BRK_result")
+              item.name.includes("_fixed") ||
+              item.name.includes("_result")
             ) {
               continue;
             }
@@ -242,9 +245,10 @@ class Scanner {
    * @returns {Object|null} - Project info object or null if not a valid project file
    */
   extractProjectInfoFromPath(fullPath, fileName) {
-    // Match project pattern: W5270NS01003A.json
-    const projectMatch = fileName.match(
-      /^(W\d{4}[A-Z]{2}\d{2,})([A-Z]?)\.json$/
+    // Match project pattern: W5270NS01003A.json or BRK_W5270NS01003A.json
+    const cleanFileName = fileName.replace(/^BRK_/, '');
+    const projectMatch = cleanFileName.match(
+      /^(W\d{4}[A-Z]{2}\d{2,})([A-Z]+)\.json$/
     );
 
     if (projectMatch) {
@@ -349,7 +353,18 @@ class Scanner {
           );
 
           // Use ExcelProcessor to read actual Excel data from temp copy
-          const excelData = ExcelProcessor.processMainExcel(tempExcelPath);
+          const excelData = await ExcelProcessor.processMainExcel(tempExcelPath);
+
+          // Check if processing was successful
+          if (!excelData.success) {
+            Logger.error(`    ✗ Excel processing failed: ${excelData.error}`);
+            processedFiles.push({
+              fileName: excelFile.fileName,
+              toolCount: 0,
+              error: excelData.error
+            });
+            continue;
+          }
 
           // Accumulate tool inventory from this file
           if (excelData.toolInventory) {
@@ -543,9 +558,14 @@ class Scanner {
    * Step 8: Clean temp folder using organized structure
    */
   async cleanTempFolder() {
-    // Safety check: don't clean in test mode
+    // Safety check: don't clean in test mode or persistent folder mode
     if (config.app.testMode) {
       Logger.warn(`🚫 Cleanup blocked in test mode - temp data preserved`);
+      return;
+    }
+    
+    if (config.app.usePersistentTempFolder) {
+      Logger.warn(`🚫 Cleanup blocked in persistent folder mode - temp data preserved for reuse`);
       return;
     }
 

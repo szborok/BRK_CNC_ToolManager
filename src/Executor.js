@@ -207,13 +207,11 @@ class Executor {
   }
 
   /**
-   * Run manual mode with automatic path resolution (test mode or user input).
+   * Process files without exiting (used by API triggers)
    */
-  async runManualMode() {
+  async processFiles() {
     try {
-      Logger.info(
-        `Starting manual mode (${config.app.testMode ? "TEST" : "PRODUCTION"})`
-      );
+      Logger.info("Processing files...");
 
       // Use the scanner's path resolution method
       await this.scanner.scanWithPathResolution();
@@ -225,9 +223,7 @@ class Executor {
         return;
       }
 
-      Logger.info(
-        `Found ${projects.length} project(s) to process in manual mode.`
-      );
+      Logger.info(`Found ${projects.length} project(s) to process.`);
 
       for (const project of projects) {
         if (project.status === "ready") {
@@ -235,7 +231,24 @@ class Executor {
         }
       }
 
-      Logger.info("Manual mode processing completed.");
+      Logger.info("Processing completed.");
+    } catch (err) {
+      Logger.error(`Processing failed: ${err.message}`);
+      throw err;
+    }
+  }
+
+  /**
+   * Run manual mode with automatic path resolution (test mode or user input).
+   */
+  async runManualMode() {
+    try {
+      Logger.info(
+        `Starting manual mode (${config.app.testMode ? "TEST" : "PRODUCTION"})`
+      );
+
+      await this.processFiles();
+
       this.stop();
       process.exit(0);
     } catch (err) {
@@ -252,15 +265,23 @@ class Executor {
     const intervalSeconds = Math.floor(ms / 1000);
     Logger.info(`⏱️  Waiting ${intervalSeconds} seconds before next scan...`);
 
-    for (let i = intervalSeconds; i > 0; i--) {
-      if (!this.isRunning || !config.app.autoMode) break;
-
-      if (i <= 10 || i % 10 === 0) {
-        Logger.info(`⏱️  Next scan in ${i} seconds...`);
-      }
-
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+    // Show countdown at milestone intervals only (50s, 30s, 10s)
+    const milestones = [50, 30, 10].filter(m => m < intervalSeconds);
+    let elapsed = 0;
+    
+    for (const milestone of milestones) {
+      const waitTime = (intervalSeconds - milestone - elapsed) * 1000;
+      await new Promise((resolve) => setTimeout(resolve, waitTime));
+      
+      if (!this.isRunning || !config.app.autoMode) return;
+      
+      Logger.info(`⏱️  Next scan in ${milestone} seconds...`);
+      elapsed = intervalSeconds - milestone;
     }
+    
+    // Wait remaining time
+    const finalWait = (intervalSeconds - elapsed) * 1000;
+    await new Promise((resolve) => setTimeout(resolve, finalWait));
   }
 
   /**

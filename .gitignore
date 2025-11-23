@@ -55,53 +55,6 @@ jspm_packages/
 ehthumbs.db
 Thumbs.db
 
-# Test data (use centralized CNC_TestData repository instead)
-data/test_data/
-test_data/
-**/test_data/
-
-# Working data and temp files
-working_data/
-BRK*CNC*Management*Dashboard/
-
-# Processed files
-filesProcessedArchive/
-filesToProcess/*.xlsx
-filesToProcess/*.json
-
 # Build outputs
 dist/
 build/
-
-# ToolManager specific temp files (LEGACY - working_data no longer used)
-working_data/
-temp/
-
-# Generated work tracking files
-*_work_tracking.json
-*_tool_analysis.json
-*_BRK_*.json
-
-# Read-only processing temp folders
-BRK_CNC_Management_Dashboard/
-"BRK CNC Management Dashboard"/
-
-# Test data (now in centralized CNC_TestData repository)
-data/test_source_data/
-data/test_processed_data/
-
-# Session and tracking files
-*.session
-
-# Test and development artifacts
-test_output/
-test_results/
-archive/
-
-# Excel processing temp files
-temp_excel/
-excel_backup/
-
-# Development logs (keep recent production logs)
-logs/app-2025-10-*.log
-logs/app-2025-11-0[1-4].log*.icloud

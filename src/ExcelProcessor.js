@@ -2,7 +2,7 @@
 /**
  * Excel processor for extracting tool inventory from the daily Excel file
  */
-const ExcelJS = require('exceljs');
+const XLSX = require('xlsx');
 const fs = require('fs');
 const Logger = require('../utils/Logger');
 
@@ -20,15 +20,36 @@ class ExcelProcessor {
         throw new Error(`File not found: ${filePath}`);
       }
 
-      const workbook = new ExcelJS.Workbook();
-      await workbook.xlsx.readFile(filePath);
-      const worksheet = workbook.worksheets[0]; // First sheet
+      Logger.info(`[ExcelProcessor] Reading file: ${filePath}`);
       
-      // Convert to array of arrays for easier processing
-      const rawData = [];
-      worksheet.eachRow((row, rowNumber) => {
-        rawData.push(row.values.slice(1)); // Remove first empty element
-      });
+      // Check file stats
+      const stats = fs.statSync(filePath);
+      Logger.info(`[ExcelProcessor] File size: ${stats.size} bytes`);
+      
+      if (stats.size === 0) {
+        throw new Error('Excel file is empty (0 bytes)');
+      }
+      
+      // Read Excel file using XLSX (SheetJS)
+      Logger.info(`[ExcelProcessor] Reading workbook with XLSX...`);
+      const workbook = XLSX.readFile(filePath);
+      Logger.info(`[ExcelProcessor] Workbook loaded successfully`);
+      
+      // Get first sheet
+      const sheetNames = workbook.SheetNames;
+      Logger.info(`[ExcelProcessor] Found ${sheetNames.length} sheets: ${sheetNames.join(', ')}`);
+      
+      if (sheetNames.length === 0) {
+        throw new Error('Excel file has no worksheets');
+      }
+      
+      const firstSheetName = sheetNames[0];
+      const worksheet = workbook.Sheets[firstSheetName];
+      Logger.info(`[ExcelProcessor] Processing sheet: ${firstSheetName}`);
+      
+      // Convert sheet to array of arrays
+      const rawData = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: null });
+      Logger.info(`[ExcelProcessor] Converted to array: ${rawData.length} rows`);
       
       // Find the header row with "Tételkód" and "Mennyiség"
       const headerRowIndex = this.findHeaderRow(rawData);

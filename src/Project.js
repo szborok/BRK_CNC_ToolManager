@@ -191,37 +191,27 @@ class Project {
    * @returns {boolean} - True if data loaded successfully
    */
   loadJsonData() {
-    let tempJsonPath = null;
-    
     try {
       Logger.info(`Reading JSON file: ${this.jsonFilePath}`);
       
-      // Step 1: Read the original JSON file
+      // JSONScanner already sanitized the files - read directly
       const rawJsonContent = fs.readFileSync(this.jsonFilePath, 'utf8');
-      Logger.info(`Raw JSON length: ${rawJsonContent.length} characters`);
+      Logger.info(`JSON length: ${rawJsonContent.length} characters`);
       
-      // Step 2: Sanitize the content
-      const sanitizedJsonContent = Project.sanitizeJsonContent(rawJsonContent);
-      Logger.info(`Sanitized JSON length: ${sanitizedJsonContent.length} characters`);
-      
-      // Step 3: Create temporary file with sanitized content
-      tempJsonPath = this.createTempJsonFile(sanitizedJsonContent);
-      Logger.info(`Created temporary sanitized file: ${tempJsonPath}`);
-      
-      // Step 4: Parse the sanitized JSON
-      const jsonContent = JSON.parse(sanitizedJsonContent);
+      // Parse JSON directly (no sanitization needed)
+      const jsonContent = JSON.parse(rawJsonContent);
       Logger.info(`JSON parsed successfully, type: ${typeof jsonContent}`);
       
       if (!jsonContent) {
         throw new Error("Parsed JSON content is null or undefined");
       }
       
-      // Step 5: Extract project metadata
+      // Extract project metadata
       this.operator = jsonContent.operator || null;
       this.machine = jsonContent.machine || null;
       this.hypermillFilePath = jsonContent.cadPart || null;
       
-      // Step 6: Process operations into compound jobs
+      // Process operations into compound jobs
       if (jsonContent.operations && Array.isArray(jsonContent.operations)) {
         Logger.info(`Processing ${jsonContent.operations.length} operations`);
         this.processOperations(jsonContent.operations);
@@ -237,7 +227,7 @@ class Project {
       
       // Most JSON loading errors are probably fatal
       if (err instanceof SyntaxError) {
-        // JSON parsing failed even after sanitization - definitely fatal
+        // JSON parsing failed - definitely fatal
         this.markAsFatalError(`JSON parsing failed: ${err.message}`);
         this.status = "fatal_error";
       } else if (err.code === 'ENOENT') {
@@ -255,53 +245,10 @@ class Project {
       }
       
       return false;
-    } finally {
-      // Step 7: Always clean up temporary file
-      if (tempJsonPath) {
-        this.cleanupTempFile(tempJsonPath);
-      }
     }
   }
 
-  /**
-   * Creates a temporary file with sanitized JSON content
-   * @param {string} sanitizedContent - The sanitized JSON content
-   * @returns {string} - Path to the temporary file
-   */
-  createTempJsonFile(sanitizedContent) {
-    const tempDir = path.join(__dirname, '..', 'temp');
-    
-    // Ensure temp directory exists
-    if (!fs.existsSync(tempDir)) {
-      fs.mkdirSync(tempDir, { recursive: true });
-    }
-    
-    // Create unique temporary filename
-    const originalFileName = path.basename(this.jsonFilePath, '.json');
-    const timestamp = Date.now();
-    const tempFileName = `${originalFileName}_sanitized_${timestamp}.json`;
-    const tempFilePath = path.join(tempDir, tempFileName);
-    
-    // Write sanitized content to temporary file
-    fs.writeFileSync(tempFilePath, sanitizedContent, 'utf8');
-    
-    return tempFilePath;
-  }
 
-  /**
-   * Cleans up temporary file
-   * @param {string} tempFilePath - Path to the temporary file to delete
-   */
-  cleanupTempFile(tempFilePath) {
-    try {
-      if (fs.existsSync(tempFilePath)) {
-        fs.unlinkSync(tempFilePath);
-        Logger.info(`Cleaned up temporary file: ${path.basename(tempFilePath)}`);
-      }
-    } catch (err) {
-      Logger.warn(`Failed to cleanup temporary file ${tempFilePath}: ${err.message}`);
-    }
-  }
 
   /**
    * Processes operations array into compound jobs and tool information.

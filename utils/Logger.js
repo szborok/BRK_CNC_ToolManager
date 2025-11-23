@@ -10,6 +10,21 @@ class Logger {
   static logLevel = 'info';
   static logFile = null;
   static consoleEnabled = true;
+  static projectName = 'ToolManager';
+  
+  // Color codes
+  static colors = {
+    reset: '\x1b[0m',
+    bright: '\x1b[1m',
+    dim: '\x1b[2m',
+    red: '\x1b[31m',
+    green: '\x1b[32m',
+    yellow: '\x1b[33m',
+    blue: '\x1b[34m',
+    magenta: '\x1b[35m',
+    cyan: '\x1b[36m',
+    white: '\x1b[37m'
+  };
 
   /**
    * Initialize logger with configuration
@@ -53,19 +68,19 @@ class Logger {
    */
   static writeLog(level, message) {
     const timestamp = Logger.getTimestamp();
-    const logMessage = `[${timestamp}] [${level.toUpperCase()}] ${message}`;
+    const plainMessage = `[${timestamp}] [${level.toUpperCase()}] ${message}`;
     
-    // Console output
+    // Console output - plain text, start-all.js adds colors
     if (Logger.consoleEnabled) {
-      console.log(logMessage);
+      process.stdout.write(`[${timestamp}] [${level.toUpperCase()}] ${message}\n`);
     }
     
-    // File output
+    // File output (no color codes)
     if (Logger.logFile) {
       try {
-        fs.appendFileSync(Logger.logFile, logMessage + '\n', 'utf8');
+        fs.appendFileSync(Logger.logFile, plainMessage + '\n', 'utf8');
       } catch (error) {
-        console.error('Failed to write to log file:', error.message);
+        process.stderr.write(`Failed to write to log file: ${error.message}\n`);
       }
     }
   }
@@ -76,6 +91,7 @@ class Logger {
    */
   static info(message) {
     Logger.writeLog('info', message);
+    return '';
   }
 
   /**
@@ -84,6 +100,7 @@ class Logger {
    */
   static error(message) {
     Logger.writeLog('error', message);
+    return '';
   }
 
   /**
@@ -92,6 +109,7 @@ class Logger {
    */
   static warn(message) {
     Logger.writeLog('warn', message);
+    return '';
   }
 
   /**
@@ -102,6 +120,7 @@ class Logger {
     if (Logger.logLevel === 'debug') {
       Logger.writeLog('debug', message);
     }
+    return '';
   }
 
   /**

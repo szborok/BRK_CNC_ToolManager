@@ -3,9 +3,7 @@
   "generatedAt": "2025-11-13T19:21:01.523Z",
   "categories": {
     "ECUT": {
-      "name": "ECUT",
-      "excelFile": "E-Cut készlet.xlsx",
-      "toolCount": 29,
+      "toolFamilyName": "ECUT",
       "codePatterns": [
         "8400",
         "8410",
@@ -15,43 +13,169 @@
         {
           "toolCode": "RT-8400300",
           "codePrefix": "8400",
-          "description": "",
-          "diameter": null
-        },
-        {
-          "toolCode": "RT-8400391_1",
-          "codePrefix": "8400",
-          "description": "",
-          "diameter": null
+          "toolLife": 60,
+          "diameter": 5.7
         },
         {
           "toolCode": "RT-8400391",
           "codePrefix": "8400",
-          "description": "",
-          "diameter": null
+          "toolLife": 60,
+          "diameter": 7.7
+        },
+        {
+          "toolCode": "RT-8400391_1",
+          "codePrefix": "8400",
+          "toolLife": 60,
+          "diameter": 7.4
         },
         {
           "toolCode": "RT-8400450",
           "codePrefix": "8400",
-          "description": "",
-          "diameter": null
+          "toolLife": 60,
+          "diameter": 9.7
         },
         {
           "toolCode": "RT-8400450_1",
           "codePrefix": "8400",
-          "description": "",
-          "diameter": null
+          "toolLife": 60,
+          "diameter": 9.4
+        },
+        {
+          "toolCode": "RT-8400501",
+          "codePrefix": "8400",
+          "toolLife": 60,
+          "diameter": 11.7
+        },
+        {
+          "toolCode": "RT-8400501_1",
+          "codePrefix": "8400",
+          "toolLife": 60,
+          "diameter": 11.4
+        },
+        {
+          "toolCode": "RT-8400610",
+          "codePrefix": "8400",
+          "toolLife": 60,
+          "diameter": 15.6
+        },
+        {
+          "toolCode": "RT-8400610_1",
+          "codePrefix": "8400",
+          "toolLife": 60,
+          "diameter": 15.2
+        },
+        {
+          "toolCode": "RT-8410300",
+          "codePrefix": "8410",
+          "toolLife": 60,
+          "diameter": 5.7
+        },
+        {
+          "toolCode": "RT-8410391",
+          "codePrefix": "8410",
+          "toolLife": 60,
+          "diameter": 7.7
+        },
+        {
+          "toolCode": "RT-8410391_1",
+          "codePrefix": "8410",
+          "toolLife": 60,
+          "diameter": 7.4
+        },
+        {
+          "toolCode": "RT-8410450",
+          "codePrefix": "8410",
+          "toolLife": 60,
+          "diameter": 9.7
+        },
+        {
+          "toolCode": "RT-8410450_1",
+          "codePrefix": "8410",
+          "toolLife": 60,
+          "diameter": 9.4
+        },
+        {
+          "toolCode": "RT-8410501",
+          "codePrefix": "8410",
+          "toolLife": 60,
+          "diameter": 11.7
+        },
+        {
+          "toolCode": "RT-8410501_1",
+          "codePrefix": "8410",
+          "toolLife": 60,
+          "diameter": 11.4
+        },
+        {
+          "toolCode": "RT-8410610",
+          "codePrefix": "8410",
+          "toolLife": 60,
+          "diameter": 15.6
+        },
+        {
+          "toolCode": "RT-8410610_1",
+          "codePrefix": "8410",
+          "toolLife": 60,
+          "diameter": 15.2
+        },
+        {
+          "toolCode": "RT-8420300",
+          "codePrefix": "8420",
+          "toolLife": 60,
+          "diameter": 5.7
+        },
+        {
+          "toolCode": "RT-8420391",
+          "codePrefix": "8420",
+          "toolLife": 60,
+          "diameter": 7.7
+        },
+        {
+          "toolCode": "RT-8420391_1",
+          "codePrefix": "8420",
+          "toolLife": 60,
+          "diameter": 7.4
+        },
+        {
+          "toolCode": "RT-8420450",
+          "codePrefix": "8420",
+          "toolLife": 60,
+          "diameter": 9.7
+        },
+        {
+          "toolCode": "RT-8420450_1",
+          "codePrefix": "8420",
+          "toolLife": 60,
+          "diameter": 9.4
+        },
+        {
+          "toolCode": "RT-8420501",
+          "codePrefix": "8420",
+          "toolLife": 60,
+          "diameter": 11.7
+        },
+        {
+          "toolCode": "RT-8420501_1",
+          "codePrefix": "8420",
+          "toolLife": 60,
+          "diameter": 11.4
+        },
+        {
+          "toolCode": "RT-8420610",
+          "codePrefix": "8420",
+          "toolLife": 60,
+          "diameter": 15.6
+        },
+        {
+          "toolCode": "RT-8420610_1",
+          "codePrefix": "8420",
+          "toolLife": 60,
+          "diameter": 15.2
         }
-      ],
-      "diameterRange": {
-        "min": null,
-        "max": null
-      }
+      ]
     },
     "MFC": {
-      "name": "MFC",
-      "excelFile": "MFC készlet.xlsx",
-      "toolCount": 28,
+      "toolFamilyName": "MFC",
       "codePatterns": [
         "8201",
         "8211",
@@ -61,108 +185,498 @@
         {
           "toolCode": "RT-8201300",
           "codePrefix": "8201",
-          "description": "",
-          "diameter": null
+          "toolLife": 60,
+          "diameter": 5.7
         },
         {
           "toolCode": "RT-8201391",
           "codePrefix": "8201",
-          "description": "",
-          "diameter": null
+          "toolLife": 60,
+          "diameter": 7.7
         },
         {
           "toolCode": "RT-8201391_1",
           "codePrefix": "8201",
-          "description": "",
-          "diameter": null
+          "toolLife": 60,
+          "diameter": 7.4
         },
         {
           "toolCode": "RT-8201450",
           "codePrefix": "8201",
-          "description": "",
-          "diameter": null
+          "toolLife": 60,
+          "diameter": 9.7
         },
         {
           "toolCode": "RT-8201450_1",
           "codePrefix": "8201",
-          "description": "",
-          "diameter": null
+          "toolLife": 60,
+          "diameter": 9.4
+        },
+        {
+          "toolCode": "RT-8201501",
+          "codePrefix": "8201",
+          "toolLife": 60,
+          "diameter": 11.7
+        },
+        {
+          "toolCode": "RT-8201501_1",
+          "codePrefix": "8201",
+          "toolLife": 60,
+          "diameter": 11.4
+        },
+        {
+          "toolCode": "RT-8201610",
+          "codePrefix": "8201",
+          "toolLife": 60,
+          "diameter": 15.6
+        },
+        {
+          "toolCode": "RT-8201610_1",
+          "codePrefix": "8201",
+          "toolLife": 60,
+          "diameter": 15.2
+        },
+        {
+          "toolCode": "RT-8211300",
+          "codePrefix": "8211",
+          "toolLife": 60,
+          "diameter": 5.7
+        },
+        {
+          "toolCode": "RT-8211391",
+          "codePrefix": "8211",
+          "toolLife": 60,
+          "diameter": 7.7
+        },
+        {
+          "toolCode": "RT-8211391_1",
+          "codePrefix": "8211",
+          "toolLife": 60,
+          "diameter": 7.4
+        },
+        {
+          "toolCode": "RT-8211450",
+          "codePrefix": "8211",
+          "toolLife": 60,
+          "diameter": 9.7
+        },
+        {
+          "toolCode": "RT-8211450_1",
+          "codePrefix": "8211",
+          "toolLife": 60,
+          "diameter": 9.4
+        },
+        {
+          "toolCode": "RT-8211501",
+          "codePrefix": "8211",
+          "toolLife": 60,
+          "diameter": 11.7
+        },
+        {
+          "toolCode": "RT-8211501_1",
+          "codePrefix": "8211",
+          "toolLife": 60,
+          "diameter": 11.4
+        },
+        {
+          "toolCode": "RT-8211610",
+          "codePrefix": "8211",
+          "toolLife": 60,
+          "diameter": 15.6
+        },
+        {
+          "toolCode": "RT-8211610_1",
+          "codePrefix": "8211",
+          "toolLife": 60,
+          "diameter": 15.2
+        },
+        {
+          "toolCode": "RT-8221300",
+          "codePrefix": "8221",
+          "toolLife": 60,
+          "diameter": 5.7
+        },
+        {
+          "toolCode": "RT-8221391",
+          "codePrefix": "8221",
+          "toolLife": 60,
+          "diameter": 7.7
+        },
+        {
+          "toolCode": "RT-8221391_1",
+          "codePrefix": "8221",
+          "toolLife": 60,
+          "diameter": 7.4
+        },
+        {
+          "toolCode": "RT-8221450",
+          "codePrefix": "8221",
+          "toolLife": 60,
+          "diameter": 9.7
+        },
+        {
+          "toolCode": "RT-8221450_1",
+          "codePrefix": "8221",
+          "toolLife": 60,
+          "diameter": 9.4
+        },
+        {
+          "toolCode": "RT-8221501",
+          "codePrefix": "8221",
+          "toolLife": 60,
+          "diameter": 11.7
+        },
+        {
+          "toolCode": "RT-8221501_1",
+          "codePrefix": "8221",
+          "toolLife": 60,
+          "diameter": 11.4
+        },
+        {
+          "toolCode": "RT-8221501_2",
+          "codePrefix": "8221",
+          "toolLife": 60,
+          "diameter": 11.0
+        },
+        {
+          "toolCode": "RT-8221610",
+          "codePrefix": "8221",
+          "toolLife": 60,
+          "diameter": 15.6
+        },
+        {
+          "toolCode": "RT-8221610_1",
+          "codePrefix": "8221",
+          "toolLife": 60,
+          "diameter": 15.2
         }
-      ],
-      "diameterRange": {
-        "min": null,
-        "max": null
-      }
+      ]
     },
     "XF": {
-      "name": "XF",
-      "excelFile": "XF simitó.xlsx",
-      "toolCount": 37,
+      "toolFamilyName": "MXF",
       "codePatterns": [
-        "1525",
+        "15250",
+        "15251",
+        "15254",
         "8521"
       ],
       "tools": [
         {
           "toolCode": "RT-15250300",
-          "codePrefix": "1525",
-          "description": "",
-          "diameter": null
+          "codePrefix": "15250",
+          "toolLife": 60,
+          "diameter": 5.7
         },
         {
           "toolCode": "RT-15250391",
-          "codePrefix": "1525",
-          "description": "",
-          "diameter": null
+          "codePrefix": "15250",
+          "toolLife": 60,
+          "diameter": 7.7
         },
         {
           "toolCode": "RT-15250391_1",
-          "codePrefix": "1525",
-          "description": "",
-          "diameter": null
+          "codePrefix": "15250",
+          "toolLife": 60,
+          "diameter": 7.4
         },
         {
           "toolCode": "RT-15250450",
-          "codePrefix": "1525",
-          "description": "",
-          "diameter": null
+          "codePrefix": "15250",
+          "toolLife": 60,
+          "diameter": 9.7
         },
         {
           "toolCode": "RT-15250450_1",
-          "codePrefix": "1525",
-          "description": "",
-          "diameter": null
+          "codePrefix": "15250",
+          "toolLife": 60,
+          "diameter": 9.4
+        },
+        {
+          "toolCode": "RT-15250501",
+          "codePrefix": "15250",
+          "toolLife": 60,
+          "diameter": 11.7
+        },
+        {
+          "toolCode": "RT-15250501_1",
+          "codePrefix": "15250",
+          "toolLife": 60,
+          "diameter": 11.4
+        },
+        {
+          "toolCode": "RT-15250610",
+          "codePrefix": "15250",
+          "toolLife": 60,
+          "diameter": 15.6
+        },
+        {
+          "toolCode": "RT-15250610_1",
+          "codePrefix": "15250",
+          "toolLife": 60,
+          "diameter": 15.2
+        },
+        {
+          "toolCode": "RT-15250260",
+          "codePrefix": "15250",
+          "toolLife": 60,
+          "diameter": 4.7
+        },
+        {
+          "toolCode": "RT-15251300",
+          "codePrefix": "15251",
+          "toolLife": 60,
+          "diameter": 5.7
+        },
+        {
+          "toolCode": "RT-15251391",
+          "codePrefix": "15251",
+          "toolLife": 60,
+          "diameter": 7.7
+        },
+        {
+          "toolCode": "RT-15251391_1",
+          "codePrefix": "15251",
+          "toolLife": 60,
+          "diameter": 7.4
+        },
+        {
+          "toolCode": "RT-15251450",
+          "codePrefix": "15251",
+          "toolLife": 60,
+          "diameter": 9.7
+        },
+        {
+          "toolCode": "RT-15251450_1",
+          "codePrefix": "15251",
+          "toolLife": 60,
+          "diameter": 9.4
+        },
+        {
+          "toolCode": "RT-15251501",
+          "codePrefix": "15251",
+          "toolLife": 60,
+          "diameter": 11.7
+        },
+        {
+          "toolCode": "RT-15251501_1",
+          "codePrefix": "15251",
+          "toolLife": 60,
+          "diameter": 11.4
+        },
+        {
+          "toolCode": "RT-15251610",
+          "codePrefix": "15251",
+          "toolLife": 60,
+          "diameter": 15.6
+        },
+        {
+          "toolCode": "RT-15251610_1",
+          "codePrefix": "15251",
+          "toolLife": 60,
+          "diameter": 15.2
+        },
+        {
+          "toolCode": "RT-15254300",
+          "codePrefix": "15254",
+          "toolLife": 60,
+          "diameter": 5.7
+        },
+        {
+          "toolCode": "RT-15254391",
+          "codePrefix": "15254",
+          "toolLife": 60,
+          "diameter": 7.7
+        },
+        {
+          "toolCode": "RT-15254391_1",
+          "codePrefix": "15254",
+          "toolLife": 60,
+          "diameter": 7.4
+        },
+        {
+          "toolCode": "RT-15254450",
+          "codePrefix": "15254",
+          "toolLife": 60,
+          "diameter": 9.7
+        },
+        {
+          "toolCode": "RT-15254450_1",
+          "codePrefix": "15254",
+          "toolLife": 60,
+          "diameter": 9.4
+        },
+        {
+          "toolCode": "RT-15254501",
+          "codePrefix": "15254",
+          "toolLife": 60,
+          "diameter": 11.7
+        },
+        {
+          "toolCode": "RT-15254501_1",
+          "codePrefix": "15254",
+          "toolLife": 60,
+          "diameter": 11.4
+        },
+        {
+          "toolCode": "RT-15254610",
+          "codePrefix": "15254",
+          "toolLife": 60,
+          "diameter": 15.6
+        },
+        {
+          "toolCode": "RT-15254610_1",
+          "codePrefix": "15254",
+          "toolLife": 60,
+          "diameter": 15.2
+        },
+        {
+          "toolCode": "RT-8521300",
+          "codePrefix": "8521",
+          "toolLife": 60,
+          "diameter": 5.7
+        },
+        {
+          "toolCode": "RT-8521391",
+          "codePrefix": "8521",
+          "toolLife": 60,
+          "diameter": 7.7
+        },
+        {
+          "toolCode": "RT-8521391_1",
+          "codePrefix": "8521",
+          "toolLife": 60,
+          "diameter": 7.4
+        },
+        {
+          "toolCode": "RT-8521501",
+          "codePrefix": "8521",
+          "toolLife": 60,
+          "diameter": 11.7
+        },
+        {
+          "toolCode": "RT-8521501_1",
+          "codePrefix": "8521",
+          "toolLife": 60,
+          "diameter": 11.4
+        },
+        {
+          "toolCode": "RT-8521450",
+          "codePrefix": "8521",
+          "toolLife": 60,
+          "diameter": 9.7
+        },
+        {
+          "toolCode": "RT-8521450_1",
+          "codePrefix": "8521",
+          "toolLife": 60,
+          "diameter": 9.4
+        },
+        {
+          "toolCode": "RT-8521610",
+          "codePrefix": "8521",
+          "toolLife": 60,
+          "diameter": 15.6
+        },
+        {
+          "toolCode": "RT-8521610_1",
+          "codePrefix": "8521",
+          "toolLife": 60,
+          "diameter": 15.2
         }
-      ],
-      "diameterRange": {
-        "min": null,
-        "max": null
-      }
+      ]
     },
     "XFEED": {
-      "name": "XFEED",
-      "excelFile": "XFeed szerszámok.xlsx",
-      "toolCount": 0,
-      "codePatterns": [],
-      "tools": [],
-      "diameterRange": {
-        "min": null,
-        "max": null
-      }
+      "toolFamilyName": "XFR",
+      "codePatterns": [
+        "7620",
+        "7624"
+      ],
+      "tools": [
+        {
+          "toolCode": "RT-X7620300",
+          "codePrefix": "7620",
+          "toolLife": 60,
+          "diameter": 5.5
+        },
+        {
+          "toolCode": "RT-X7624300",
+          "codePrefix": "7624",
+          "toolLife": 60,
+          "diameter": 5.5
+        },
+        {
+          "toolCode": "RT-X7620391",
+          "codePrefix": "7620",
+          "toolLife": 60,
+          "diameter": 7.5
+        },
+        {
+          "toolCode": "RT-X7620391_1",
+          "codePrefix": "7620",
+          "toolLife": 60,
+          "diameter": 7
+        },
+        {
+          "toolCode": "RT-X7624391",
+          "codePrefix": "7624",
+          "toolLife": 60,
+          "diameter": 7.5
+        },
+        {
+          "toolCode": "RT-X7624391_1",
+          "codePrefix": "7624",
+          "toolLife": 60,
+          "diameter": 7
+        },
+        {
+          "toolCode": "RT-X7620450",
+          "codePrefix": "7620",
+          "toolLife": 60,
+          "diameter": 9.5
+        },
+        {
+          "toolCode": "RT-X7620450_1",
+          "codePrefix": "7620",
+          "toolLife": 60,
+          "diameter": 9
+        },
+        {
+          "toolCode": "RT-X7624450",
+          "codePrefix": "7624",
+          "toolLife": 60,
+          "diameter": 9.5
+        },
+        {
+          "toolCode": "RT-X7624450_1",
+          "codePrefix": "7624",
+          "toolLife": 60,
+          "diameter": 9
+        },
+        {
+          "toolCode": "RT-X7620501",
+          "codePrefix": "7620",
+          "toolLife": 60,
+          "diameter": 11.5
+        },
+        {
+          "toolCode": "RT-X7620501_1",
+          "codePrefix": "7620",
+          "toolLife": 60,
+          "diameter": 11
+        },
+        {
+          "toolCode": "RT-X7624501",
+          "codePrefix": "7624",
+          "toolLife": 60,
+          "diameter": 11.5
+        },
+        {
+          "toolCode": "RT-X7624501_1",
+          "codePrefix": "7624",
+          "toolLife": 60,
+          "diameter": 11
+        }
+      ]
     }
-  },
-  "matchingRules": {
-    "description": "Match tools by category code prefix (4 digits after RT-) and diameter",
-    "ignoreVariants": "Tool codes with _1, _2 suffixes are variants of the same tool",
-    "diameterTolerance": 0.01,
-    "examples": [
-      {
-        "matrixCode": "RT-8400300",
-        "category": "ECUT",
-        "codePrefix": "8400",
-        "diameter": 5.7,
-        "description": "ø5,7/6x56/12 r0.1 z4"
-      }
-    ]
   }
 }

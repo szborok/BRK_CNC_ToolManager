@@ -3,7 +3,8 @@ const path = require("path");
 
 const config = {
   app: {
-    mode: 'auto', // 'test' = test data + manual trigger, 'manual' = production + manual trigger, 'auto' = production + autorun
+    mode: 'manual', // 'test' = test data + manual trigger, 'manual' = production + manual trigger, 'auto' = production + autorun
+    autoMode: false, // Explicit: no auto-scanning - AutoRunProcessor handles automation
     useTestPaths: true, // Override to use test-data paths even in auto mode
     scanIntervalMs: 60000, // 60 seconds - same as json_scanner
     logLevel: "info",
@@ -64,8 +65,8 @@ const config = {
   },
   files: {
     jsonExtension: ".json",
-    fixedSuffix: "BRK_fixed",
-    resultSuffix: "BRK_result",
+    fixedSuffix: "fixed",
+    resultSuffix: "result",
   },
   paths: {
     // Shared resources (used by both test and production)
@@ -86,14 +87,15 @@ const config = {
 
       // All processing happens in BRK temp structure - no separate working directories needed
 
-      // JSON files from CNC machines (from centralized test data)
+      // JSON files from JSONScanner output (project/machine folders)
       jsonScanPath: path.join(
         __dirname,
         "..",
         "BRK_CNC_CORE",
         "test-data",
-        "source_data",
-        "json_files"
+        "working_data",
+        "BRK CNC Management Dashboard",
+        "JSONScanner"
       ),
 
       // Excel files directory (scan for any Excel files here in test mode)
@@ -101,8 +103,9 @@ const config = {
         __dirname,
         "..",
         "BRK_CNC_CORE",
-        "train-data",
-        "matrix_tools"
+        "test-data",
+        "source_data",
+        "matrix_excel_files"
       ),
 
       // Configuration files (schedule file can be in test_source_data if needed)

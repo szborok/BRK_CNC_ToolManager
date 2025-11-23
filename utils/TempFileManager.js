@@ -106,6 +106,8 @@ class TempFileManager {
           Logger.info(`Created ${subdir.name} directory: ${subdir.path}`);
         }
       }
+      
+      Logger.info(`ToolManager directories ready at: ${this.sessionPath}`);
     } catch (error) {
       Logger.error("Failed to create temp directories:", error);
       throw error;
